@@ -25,7 +25,12 @@ aside{position:sticky;top:16px;align-self:start}
 .panel h2{margin:0 0 12px;font-size:14px;color:var(--navy);text-transform:uppercase;letter-spacing:.5px}
 .bigstage{font-size:22px;font-weight:bold;margin:2px 0}
 .kv{font-size:13px;margin:10px 0}.kv b{display:block;color:var(--grey);font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.idxbar{height:14px;background:var(--line);border-radius:7px;overflow:hidden;margin-top:2px}
+.idxbar>span{display:block;height:100%;width:0;background:var(--navy);transition:width .15s}
+.idxlabels{display:flex;font-size:9.5px;color:#9ca3af;margin-top:3px}
+.idxlabels span{flex:1;text-align:center}
 .prof{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.prof h3{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--grey)}
 .prow{margin:9px 0;font-size:12.5px}
 .plabel{display:flex;justify-content:space-between;margin-bottom:3px}
 .bar{height:9px;background:var(--line);border-radius:6px;overflow:hidden}
@@ -55,25 +60,29 @@ footer{max-width:1180px;margin:0 auto;padding:6px 20px 30px;font-size:11px;color
 }
 </style></head>
 <body>
-<header><h1>Trusted AI Pathway — IT / Security Admin Self-Assessment</h1><p>Slide each statement 1–5 for how true it is for your organisation today (1 = not true, 5 = completely true). Statements are mixed across stages on purpose — answer blind, and the panel reveals which stage you most resemble.</p></header>
+<header><h1>Trusted AI Pathway — IT / Security Admin Self-Assessment</h1><p>Slide each statement 1–5 for how true it is for your organisation today (1 = not true, 5 = completely true). Every statement is a capability — your answers combine into one Maturity Index from 1 to 100.</p></header>
 <div class="wrap">
  <main><h2 class="print-only answers-title">Your answers</h2><div id="qs"></div></main>
  <aside><div class="panel">
    <h2 class="print-only" style="color:var(--navy)">Assessment outcome</h2>
    <h2>Your position</h2>
-   <div class="kv"><b>Strongest-matching stage</b><span class="bigstage" id="curStage">Move the sliders to begin</span></div>
+   <div class="kv"><b>Maturity index (1–100)</b><span class="bigstage" id="idxnum">—</span>
+     <div class="idxbar"><span id="idxbar"></span></div>
+     <div class="idxlabels"><span>Discover</span><span>Ready</span><span>Govern</span><span>Scale</span></div></div>
+   <div class="kv"><b>Current stage</b><span class="bigstage" id="curStage" style="font-size:18px">Move the sliders to begin</span></div>
    <div class="kv"><b>Value driver</b><span id="curDriver">—</span></div>
    <div class="kv"><b>Signature question</b><span id="curQ">—</span></div>
    <div class="kv"><b>Recommended engagement</b><span id="curEng">—</span></div>
-   <div class="prof" id="profile"></div>
+   <div class="prof"><h3>Capability by stage</h3><div id="profile"></div></div>
    <div class="btns"><button class="primary" onclick="emailReport()">Email report</button><button onclick="window.print()">Print / PDF</button><button onclick="resetAll()">Reset</button></div>
  </div></aside>
 </div>
-<footer>Reflects the Innovation Hub "Trusted AI Pathway" deck. Scale: 1 = not true · 5 = completely true.</footer>
+<footer>Reflects the Innovation Hub "Trusted AI Pathway" deck. Maturity index: 1 = the very start of Discover, 100 = fully deployed at Scale. A stage is "built" at an average of 3.5 / 5.</footer>
 <script>
-const ITEMS = [{"id": "q1", "stage": 4, "kind": "Characteristic", "text": "Agents are published through controlled, ring-based deployment (pilot → department → enterprise), not ad-hoc."}, {"id": "q2", "stage": 2, "kind": "Characteristic", "text": "Sensitivity labels / classification are applied so AI grounding respects what is safe to use vs. what needs care."}, {"id": "q3", "stage": 1, "kind": "Characteristic", "text": "We don't yet have visibility into who is using AI, with which prompts, or against what data."}, {"id": "q4", "stage": 2, "kind": "Characteristic", "text": "DLP controls apply to AI prompts and grounding, and access has been tightened (access reviews / just-enough-access)."}, {"id": "q5", "stage": 3, "kind": "Characteristic", "text": "Agent access is intentional and least-privilege — agents don't inherit broad or accidental access."}, {"id": "q6", "stage": 1, "kind": "Characteristic", "text": "We don't have an AI usage policy, an approved-tool list, or guardrails yet."}, {"id": "q7", "stage": 4, "kind": "Characteristic", "text": "Agent identities are managed just like user identities, with least-privilege, policy-based access that can be revoked instantly."}, {"id": "q8", "stage": 3, "kind": "Characteristic", "text": "Every production agent has a clear business and technical owner, with an explicitly defined purpose and scope."}, {"id": "q9", "stage": 2, "kind": "Characteristic", "text": "We have visibility into where AI data risk really is — overshared sites, sensitive content and ownerless content are identified."}, {"id": "q10", "stage": 3, "kind": "Characteristic", "text": "We have a central inventory of all AI agents — user-built, team-built and IT-managed — and can detect shadow / unmanaged agents."}];
+const ITEMS = [{"id": "q1", "stage": 4, "kind": "Characteristic", "text": "Agents are published through controlled, ring-based deployment (pilot → department → enterprise), not ad-hoc."}, {"id": "q2", "stage": 2, "kind": "Characteristic", "text": "Sensitivity labels / classification are applied so AI grounding respects what is safe to use vs. what needs care."}, {"id": "q3", "stage": 1, "kind": "Characteristic", "text": "We have visibility into who is using AI, with which prompts, and against what data."}, {"id": "q4", "stage": 2, "kind": "Characteristic", "text": "DLP controls apply to AI prompts and grounding, and access has been tightened (access reviews / just-enough-access)."}, {"id": "q5", "stage": 3, "kind": "Characteristic", "text": "Agent access is intentional and least-privilege — agents don't inherit broad or accidental access."}, {"id": "q6", "stage": 1, "kind": "Characteristic", "text": "We have an AI usage policy, an approved-tool list and basic guardrails in place."}, {"id": "q7", "stage": 4, "kind": "Characteristic", "text": "Agent identities are managed just like user identities, with least-privilege, policy-based access that can be revoked instantly."}, {"id": "q8", "stage": 3, "kind": "Characteristic", "text": "Every production agent has a clear business and technical owner, with an explicitly defined purpose and scope."}, {"id": "q9", "stage": 2, "kind": "Characteristic", "text": "We have visibility into where AI data risk really is — overshared sites, sensitive content and ownerless content are identified."}, {"id": "q10", "stage": 3, "kind": "Characteristic", "text": "We have a central inventory of all AI agents — user-built, team-built and IT-managed — and can detect shadow / unmanaged agents."}];
 const META = {"1": {"name": "Discover", "driver": "Individual productivity", "q": "Where does this help me?", "eng": "Business Envisioning — Discover: Copilot on Every Desk (hackathons, promptathons, use-case & change workshops)"}, "2": {"name": "Ready", "driver": "Data confidence", "q": "What happens to our data when everyone starts using it?", "eng": "Business + Solution Envisioning — Ready: build confidence in how GenAI works with your data"}, "3": {"name": "Govern", "driver": "Agents under control", "q": "What is AI doing in our organisation?", "eng": "Business + Solution Envisioning — Govern: Agent 365 visibility, ownership and control"}, "4": {"name": "Scale", "driver": "Enterprise operations", "q": "How do we deploy AI agents safely and consistently across the enterprise?", "eng": "Scale: enterprise rollout, ring-based deployment, agents operated like any enterprise capability"}};
 const COLORS = {"1": "2E75B6", "2": "548235", "3": "BF8F00", "4": "7030A0"};
+const T = 3.5;
 const touched = new Set();
 const qs = document.getElementById("qs");
 ITEMS.forEach(it=>{
@@ -95,41 +104,41 @@ const prof=document.getElementById("profile");
 });
 function onSlide(el){touched.add(el.id);document.getElementById(el.id+"v").textContent=el.value;recompute();}
 function recompute(){
-  const sum={1:0,2:0,3:0,4:0}, cnt={1:0,2:0,3:0,4:0};
-  ITEMS.forEach(it=>{const v=+document.getElementById(it.id).value;sum[it.stage]+=v;cnt[it.stage]++;});
-  let best=0,bestv=-1;
-  [1,2,3,4].forEach(n=>{
-    const avg=cnt[n]?sum[n]/cnt[n]:0, pct=Math.round(avg/5*100);
+  var sum={1:0,2:0,3:0,4:0}, cnt={1:0,2:0,3:0,4:0}, all=0, allc=0;
+  ITEMS.forEach(function(it){var v=+document.getElementById(it.id).value;sum[it.stage]+=v;cnt[it.stage]++;all+=v;allc++;});
+  var mean=allc?all/allc:0, index=Math.round(1+99*(mean-1)/4), avg={};
+  [1,2,3,4].forEach(function(n){avg[n]=cnt[n]?sum[n]/cnt[n]:0;});
+  var stage; if(avg[1]<T)stage=1; else if(avg[2]<T)stage=2; else if(avg[3]<T)stage=3; else if(avg[4]<T)stage=4; else stage=5;
+  [1,2,3,4].forEach(function(n){var pct=Math.round(avg[n]/5*100);
     document.getElementById("p"+n).style.width=pct+"%";
-    document.getElementById("p"+n+"t").textContent=pct+"%";
-    if(avg>bestv){bestv=avg;best=n;}
-  });
-  const cs=document.getElementById("curStage");
-  if(touched.size===0){cs.textContent="Move the sliders to begin";cs.style.color="#1f2937";
-    document.getElementById("curDriver").textContent="—";document.getElementById("curQ").textContent="—";
-    document.getElementById("curEng").textContent="—";return;}
-  cs.textContent=best+" — "+META[best].name; cs.style.color=COLORS[best];
-  document.getElementById("curDriver").textContent=META[best].driver;
-  document.getElementById("curQ").textContent=META[best].q;
-  document.getElementById("curEng").textContent=META[best].eng;
+    document.getElementById("p"+n+"t").textContent=(touched.size&&avg[n]>=T)?"Built":pct+"%";});
+  if(touched.size===0){
+    document.getElementById("idxnum").textContent="—";document.getElementById("idxbar").style.width="0%";
+    var cs0=document.getElementById("curStage");cs0.textContent="Move the sliders to begin";cs0.style.color="#1f2937";
+    ["curDriver","curQ","curEng"].forEach(function(id){document.getElementById(id).textContent="—";});return;
+  }
+  document.getElementById("idxnum").textContent=index+" / 100";
+  document.getElementById("idxbar").style.width=index+"%";
+  var disp=stage===5?4:stage, cs=document.getElementById("curStage");
+  cs.textContent=stage===5?"Scale — fully deployed":(stage+" — "+META[stage].name);
+  cs.style.color=COLORS[disp];
+  document.getElementById("curDriver").textContent=META[disp].driver;
+  document.getElementById("curQ").textContent=META[disp].q;
+  document.getElementById("curEng").textContent=META[disp].eng;
 }
 function emailReport(){
-  var NL=String.fromCharCode(10);
-  var to="bartgabriels@microsoft.com";
-  var L=[];
-  L.push("Trusted AI Pathway — IT / Security Admin self-assessment");
-  L.push("");
+  var NL=String.fromCharCode(10), to="bartgabriels@microsoft.com", L=[];
+  L.push("Trusted AI Pathway — IT / Security Admin self-assessment"); L.push("");
   if(touched.size===0){ L.push("(No answers yet — the sliders were not moved.)"); }
   else{
-    L.push("Strongest-matching stage: "+document.getElementById("curStage").textContent);
+    L.push("Maturity index: "+document.getElementById("idxnum").textContent);
+    L.push("Current stage: "+document.getElementById("curStage").textContent);
     L.push("Value driver: "+document.getElementById("curDriver").textContent);
     L.push("Signature question: "+document.getElementById("curQ").textContent);
     L.push("Recommended engagement: "+document.getElementById("curEng").textContent);
-    L.push("");
-    L.push("Stage profile (match %):");
+    L.push(""); L.push("Capability by stage:");
     [1,2,3,4].forEach(function(n){ L.push("  "+n+" — "+META[n].name+": "+document.getElementById("p"+n+"t").textContent); });
-    L.push("");
-    L.push("Answers (score 1-5):");
+    L.push(""); L.push("Answers (score 1-5):");
     ITEMS.forEach(function(it,i){ L.push("  "+(i+1)+". ["+document.getElementById(it.id).value+"] "+it.text); });
   }
   var subject="Trusted AI Pathway — IT / Security Admin self-assessment result";
