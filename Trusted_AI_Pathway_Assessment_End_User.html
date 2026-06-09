@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trusted AI Pathway — End-User Self-Assessment</title>
+<style>
+:root{--navy:#1F3864;--grey:#6b7280;--line:#e5e7eb;--bg:#f5f6f8}
+*{box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--bg);color:#1f2937;line-height:1.45}
+header{background:var(--navy);color:#fff;padding:22px 26px}
+header h1{margin:0;font-size:22px}header p{margin:4px 0 0;font-size:13px;opacity:.85;max-width:840px}
+.wrap{max-width:1180px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 340px;gap:20px}
+@media(max-width:980px){.wrap{grid-template-columns:1fr}}
+.q{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.q .kind{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;font-weight:bold}
+.q .text{font-size:14px;margin:5px 0 11px}
+.q .text.voice{font-style:italic}
+.row{display:flex;align-items:center;gap:14px}
+.scaleval{font-weight:bold;font-size:17px;width:18px;text-align:center;color:var(--navy)}
+input[type=range]{flex:1;-webkit-appearance:none;height:6px;border-radius:6px;background:var(--line);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--navy);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--navy);cursor:pointer;border:2px solid #fff}
+.ticks{display:flex;justify-content:space-between;font-size:10px;color:#9ca3af;margin:3px 34px 0 32px}
+aside{position:sticky;top:16px;align-self:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.panel h2{margin:0 0 12px;font-size:14px;color:var(--navy);text-transform:uppercase;letter-spacing:.5px}
+.bigstage{font-size:22px;font-weight:bold;margin:2px 0}
+.kv{font-size:13px;margin:10px 0}.kv b{display:block;color:var(--grey);font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.prof{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.prow{margin:9px 0;font-size:12.5px}
+.plabel{display:flex;justify-content:space-between;margin-bottom:3px}
+.bar{height:9px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar>span{display:block;height:100%;width:0;transition:width .15s}
+.btns{display:flex;gap:8px;margin-top:16px}
+button{flex:1;font-family:inherit;font-size:12.5px;padding:9px;border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:7px;cursor:pointer;font-weight:bold}
+button.primary{background:var(--navy);color:#fff}button:hover{opacity:.9}
+footer{max-width:1180px;margin:0 auto;padding:6px 20px 30px;font-size:11px;color:var(--grey)}
+.print-only{display:none}
+@page{margin:14mm}
+@media print{
+  body{background:#fff}
+  header{background:#fff;color:var(--navy);border-bottom:2px solid var(--navy);padding:0 0 10px}
+  header p{opacity:1;color:#333}
+  .wrap{display:flex;flex-direction:column;max-width:none;padding:0;gap:0}
+  aside{order:0;position:static}
+  main{order:1;break-before:page;page-break-before:always}
+  .panel{box-shadow:none}
+  .btns{display:none}
+  footer{display:none}
+  .print-only{display:revert}
+  .answers-title{font-size:18px;color:var(--navy);margin:0 0 14px}
+  .q{break-inside:avoid;page-break-inside:avoid;box-shadow:none;border:1px solid #ccc;margin-bottom:8px}
+  .q input[type=range],.q .hint,.q .ticks{display:none}
+  .q .scaleval{font-size:14px;width:auto}
+  .q .row{gap:6px}
+}
+</style></head>
+<body>
+<header><h1>Trusted AI Pathway — End-User Self-Assessment</h1><p>Slide each statement 1–5 for how true it is for you today (1 = not true, 5 = completely true). Statements are mixed across stages on purpose — answer blind, and the panel reveals which stage you most resemble.</p></header>
+<div class="wrap">
+ <main><h2 class="print-only answers-title">Your answers</h2><div id="qs"></div></main>
+ <aside><div class="panel">
+   <h2 class="print-only" style="color:var(--navy)">Assessment outcome</h2>
+   <h2>Your position</h2>
+   <div class="kv"><b>Strongest-matching stage</b><span class="bigstage" id="curStage">Move the sliders to begin</span></div>
+   <div class="kv"><b>Value driver</b><span id="curDriver">—</span></div>
+   <div class="kv"><b>Signature question</b><span id="curQ">—</span></div>
+   <div class="kv"><b>Recommended engagement</b><span id="curEng">—</span></div>
+   <div class="prof" id="profile"></div>
+   <div class="btns"><button class="primary" onclick="emailReport()">Email report</button><button onclick="window.print()">Print / PDF</button><button onclick="resetAll()">Reset</button></div>
+ </div></aside>
+</div>
+<footer>Reflects the Innovation Hub "Trusted AI Pathway" deck. Scale: 1 = not true · 5 = completely true.</footer>
+<script>
+const ITEMS = [{"id": "q1", "stage": 3, "kind": "Characteristic", "text": "AI now does things for me — it performs tasks and takes actions, not just writes or summarises content."}, {"id": "q2", "stage": 2, "kind": "Characteristic", "text": "To be safe I hold back or limit what AI can use, and the answers come back more generic."}, {"id": "q3", "stage": 2, "kind": "Characteristic", "text": "My team and I use AI together — on shared documents, emails, chats and real business data."}, {"id": "q4", "stage": 4, "kind": "Voice", "text": "“AI is just part of how the business runs.”"}, {"id": "q5", "stage": 3, "kind": "Voice", "text": "“I can build and use agents without worrying that I'm creating a problem.”"}, {"id": "q6", "stage": 1, "kind": "Voice", "text": "“The results really depend on how you ask… but once it clicks, it's useful.”"}, {"id": "q7", "stage": 1, "kind": "Voice", "text": "“I use it for mails, meeting prep and summaries — not just once, all the time.”"}, {"id": "q8", "stage": 2, "kind": "Characteristic", "text": "AI clearly helps, but I've started to wonder what data it can actually see and use."}, {"id": "q9", "stage": 2, "kind": "Voice", "text": "“I'm not holding back anymore; the answers are actually useful.”"}, {"id": "q10", "stage": 4, "kind": "Characteristic", "text": "When I need a new agent, there's a standard, easy path to follow."}, {"id": "q11", "stage": 2, "kind": "Characteristic", "text": "Sometimes AI surfaces information I'm surprised it could access."}, {"id": "q12", "stage": 3, "kind": "Characteristic", "text": "I (or my team) can build and use our own agents."}, {"id": "q13", "stage": 1, "kind": "Characteristic", "text": "How much I get out of AI depends a lot on how I prompt — sometimes it's great, sometimes it isn't."}, {"id": "q14", "stage": 2, "kind": "Voice", "text": "“I stopped second-guessing everything — now it's clear what's safe to use.”"}, {"id": "q15", "stage": 4, "kind": "Voice", "text": "“I don't worry about whether using AI is safe — it's just handled.”"}, {"id": "q16", "stage": 2, "kind": "Voice", "text": "“It works much better now that I know what's safe to use.”"}, {"id": "q17", "stage": 1, "kind": "Characteristic", "text": "I've started drafting with AI before thinking, summarising instead of reading everything, and turning to AI first rather than last."}, {"id": "q18", "stage": 3, "kind": "Characteristic", "text": "Lots of different agents are popping up across teams — it's getting hard to keep track of them all."}, {"id": "q19", "stage": 4, "kind": "Voice", "text": "“I can spin up and use agents quickly whenever I need them.”"}, {"id": "q20", "stage": 1, "kind": "Characteristic", "text": "I'm focused on whether AI helps me personally — I haven't really thought about data, ownership or control."}, {"id": "q21", "stage": 4, "kind": "Characteristic", "text": "AI is built into the core processes I work in every day, not just my personal productivity."}, {"id": "q22", "stage": 1, "kind": "Voice", "text": "“Is anyone else using AI for reports or presentations?”"}, {"id": "q23", "stage": 1, "kind": "Voice", "text": "“It's hard to imagine working without this anymore.”"}, {"id": "q24", "stage": 4, "kind": "Voice", "text": "“Rolling out a new agent feels routine now — not risky.”"}, {"id": "q25", "stage": 1, "kind": "Characteristic", "text": "I use AI on my own — my own prompts, my own way, as a personal assistant."}, {"id": "q26", "stage": 1, "kind": "Characteristic", "text": "I figure out how to use AI on my own — there's no shared guidance or agreed ways of using it."}, {"id": "q27", "stage": 4, "kind": "Characteristic", "text": "Creating or using a new agent feels routine now — not experimental or risky."}];
+const META = {"1": {"name": "Discover", "driver": "Individual productivity", "q": "Where does this help me?", "eng": "Business Envisioning — Discover: Copilot on Every Desk (hackathons, promptathons, use-case & change workshops)"}, "2": {"name": "Ready", "driver": "Data confidence", "q": "What happens to our data when everyone starts using it?", "eng": "Business + Solution Envisioning — Ready: build confidence in how GenAI works with your data"}, "3": {"name": "Govern", "driver": "Agents under control", "q": "What is AI doing in our organisation?", "eng": "Business + Solution Envisioning — Govern: Agent 365 visibility, ownership and control"}, "4": {"name": "Scale", "driver": "Enterprise operations", "q": "How do we deploy AI agents safely and consistently across the enterprise?", "eng": "Scale: enterprise rollout, ring-based deployment, agents operated like any enterprise capability"}};
+const COLORS = {"1": "2E75B6", "2": "548235", "3": "BF8F00", "4": "7030A0"};
+const touched = new Set();
+const qs = document.getElementById("qs");
+ITEMS.forEach(it=>{
+  const d=document.createElement("div"); d.className="q";
+  d.innerHTML=`<div class="kind">${it.kind}</div>
+   <div class="text ${it.kind==='Voice'?'voice':''}">${it.text}</div>
+   <div class="row"><span class="print-only" style="font-weight:normal;font-size:12px;color:#000">Score:&nbsp;</span><span class="scaleval" id="${it.id}v">1</span>
+     <input type="range" min="1" max="5" step="1" value="1" id="${it.id}" oninput="onSlide(this)">
+     <span class="scaleval hint" style="color:#9ca3af;font-size:11px;width:54px">true →</span></div>
+   <div class="ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>`;
+  qs.appendChild(d);
+});
+const prof=document.getElementById("profile");
+[1,2,3,4].forEach(n=>{
+  const r=document.createElement("div"); r.className="prow";
+  r.innerHTML=`<div class="plabel"><span style="font-weight:bold;color:${COLORS[n]}">${n} — ${META[n].name}</span><span id="p${n}t">0%</span></div>
+    <div class="bar"><span id="p${n}" style="background:${COLORS[n]}"></span></div>`;
+  prof.appendChild(r);
+});
+function onSlide(el){touched.add(el.id);document.getElementById(el.id+"v").textContent=el.value;recompute();}
+function recompute(){
+  const sum={1:0,2:0,3:0,4:0}, cnt={1:0,2:0,3:0,4:0};
+  ITEMS.forEach(it=>{const v=+document.getElementById(it.id).value;sum[it.stage]+=v;cnt[it.stage]++;});
+  let best=0,bestv=-1;
+  [1,2,3,4].forEach(n=>{
+    const avg=cnt[n]?sum[n]/cnt[n]:0, pct=Math.round(avg/5*100);
+    document.getElementById("p"+n).style.width=pct+"%";
+    document.getElementById("p"+n+"t").textContent=pct+"%";
+    if(avg>bestv){bestv=avg;best=n;}
+  });
+  const cs=document.getElementById("curStage");
+  if(touched.size===0){cs.textContent="Move the sliders to begin";cs.style.color="#1f2937";
+    document.getElementById("curDriver").textContent="—";document.getElementById("curQ").textContent="—";
+    document.getElementById("curEng").textContent="—";return;}
+  cs.textContent=best+" — "+META[best].name; cs.style.color=COLORS[best];
+  document.getElementById("curDriver").textContent=META[best].driver;
+  document.getElementById("curQ").textContent=META[best].q;
+  document.getElementById("curEng").textContent=META[best].eng;
+}
+function emailReport(){
+  var NL=String.fromCharCode(10);
+  var to="bartgabriels@microsoft.com";
+  var L=[];
+  L.push("Trusted AI Pathway — End-User self-assessment");
+  L.push("");
+  if(touched.size===0){ L.push("(No answers yet — the sliders were not moved.)"); }
+  else{
+    L.push("Strongest-matching stage: "+document.getElementById("curStage").textContent);
+    L.push("Value driver: "+document.getElementById("curDriver").textContent);
+    L.push("Signature question: "+document.getElementById("curQ").textContent);
+    L.push("Recommended engagement: "+document.getElementById("curEng").textContent);
+    L.push("");
+    L.push("Stage profile (match %):");
+    [1,2,3,4].forEach(function(n){ L.push("  "+n+" — "+META[n].name+": "+document.getElementById("p"+n+"t").textContent); });
+    L.push("");
+    L.push("Answers (score 1-5):");
+    ITEMS.forEach(function(it,i){ L.push("  "+(i+1)+". ["+document.getElementById(it.id).value+"] "+it.text); });
+  }
+  var subject="Trusted AI Pathway — End-User self-assessment result";
+  window.location.href="mailto:"+to+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(L.join(NL));
+}
+function resetAll(){touched.clear();document.querySelectorAll('input[type=range]').forEach(r=>{r.value=1;document.getElementById(r.id+"v").textContent="1";});recompute();}
+recompute();
+</script>
+</body></html>
