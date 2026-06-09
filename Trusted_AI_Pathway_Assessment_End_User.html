@@ -131,13 +131,14 @@ function recompute(){
   [1,2,3,4].forEach(function(n){a[n]=cnt[n]?sum[n]/cnt[n]:0; if(a[n]>bestv){bestv=a[n];best=n;}});
   var cx=140,cy=112,R=82,ax={1:[cx,cy-R],2:[cx+R,cy],3:[cx,cy+R],4:[cx-R,cy]};
   function pt(n,f){return [(cx+(ax[n][0]-cx)*f).toFixed(1),(cy+(ax[n][1]-cy)*f).toFixed(1)];}
-  var svg='<div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#6b7280;margin-bottom:4px">Stage profile (star)</div>';
+  var svg='<div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--grey);margin-bottom:4px">Stage profile (star)</div>';
   svg+='<svg width="280" height="224" viewBox="0 0 280 224" font-family="Arial">';
-  [0.25,0.5,0.75,1].forEach(function(f){var pl=[1,2,3,4].map(function(n){return pt(n,f).join(',');}).join(' ');svg+='<polygon points="'+pl+'" fill="none" stroke="#e5e7eb"/>';});
-  [1,2,3,4].forEach(function(n){svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+ax[n][0]+'" y2="'+ax[n][1]+'" stroke="#e5e7eb"/>';});
+  svg+='<defs><linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2E75B6;stop-opacity:0.15"/><stop offset="33%" style="stop-color:#548235;stop-opacity:0.15"/><stop offset="66%" style="stop-color:#BF8F00;stop-opacity:0.15"/><stop offset="100%" style="stop-color:#7030A0;stop-opacity:0.15"/></linearGradient></defs>';
+  [0.25,0.5,0.75,1].forEach(function(f){var pl=[1,2,3,4].map(function(n){return pt(n,f).join(',');}).join(' ');svg+='<polygon points="'+pl+'" fill="none" stroke="var(--line)" stroke-width="1" opacity="0.4"/>';});
+  [1,2,3,4].forEach(function(n){svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+ax[n][0]+'" y2="'+ax[n][1]+'" stroke="#'+COLORS[n]+'" stroke-width="2" opacity="0.5"/>';});
   var dp=[1,2,3,4].map(function(n){return pt(n,(a[n]||0)/5).join(',');}).join(' ');
-  svg+='<polygon points="'+dp+'" fill="rgba(31,56,100,.18)" stroke="#1F3864" stroke-width="2"/>';
-  [1,2,3,4].forEach(function(n){var p=pt(n,(a[n]||0)/5);svg+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="'+COLORS[n]+'"/>';});
+  svg+='<polygon points="'+dp+'" fill="url(#starGrad)" stroke="#1F3864" stroke-width="2.5"/>';
+  [1,2,3,4].forEach(function(n){var p=pt(n,(a[n]||0)/5);svg+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="#'+COLORS[n]+'" stroke="#fff" stroke-width="2"/>';});
   var lab={1:[cx,cy-R-8,'middle'],2:[cx+R+6,cy+3,'start'],3:[cx,cy+R+17,'middle'],4:[cx-R-6,cy+3,'end']};
   [1,2,3,4].forEach(function(n){svg+='<text x="'+lab[n][0]+'" y="'+lab[n][1]+'" text-anchor="'+lab[n][2]+'" font-size="11" font-weight="bold" fill="'+COLORS[n]+'">'+META[n].name+'</text>';});
   svg+='</svg>';
