@@ -133,7 +133,7 @@ function recompute(){
   document.getElementById("profile").innerHTML=svg;
   if(touched.size===0){
     document.getElementById("idxnum").textContent="—";document.getElementById("idxbar").style.width="0%";
-    var cs0=document.getElementById("curStage");cs0.textContent="Move the sliders to begin";cs0.style.color="#1f2937";
+    var cs0=document.getElementById("curStage");cs0.textContent="Move the sliders to begin";cs0.style.color="var(--text)";
     ["curDriver","curQ","curEng"].forEach(function(id){document.getElementById(id).textContent="—";});return;
   }
   document.getElementById("idxnum").textContent=index+" / 100";

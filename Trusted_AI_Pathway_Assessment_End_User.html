@@ -135,7 +135,7 @@ function recompute(){
   svg+='<div style="font-size:11px;color:var(--text);margin-top:2px">'+[1,2,3,4].map(function(n){return '<span style="color:'+COLORS[n]+'">●</span> '+META[n].name+' '+Math.round((a[n]||0)/5*100)+'%';}).join(' &nbsp; ')+'</div>';
   document.getElementById("profile").innerHTML=svg;
   const cs=document.getElementById("curStage");
-  if(touched.size===0){cs.textContent="Move the sliders to begin";cs.style.color="#1f2937";
+  if(touched.size===0){cs.textContent="Move the sliders to begin";cs.style.color="var(--text)";
     document.getElementById("curDriver").textContent="—";document.getElementById("curQ").textContent="—";
     document.getElementById("curEng").textContent="—";return;}
   cs.textContent=best+" — "+META[best].name; cs.style.color=COLORS[best];
