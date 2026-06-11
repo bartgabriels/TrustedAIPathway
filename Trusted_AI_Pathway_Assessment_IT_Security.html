@@ -41,6 +41,8 @@ aside{position:sticky;top:16px;align-self:start}
 .btns{display:flex;gap:8px;margin-top:16px}
 button{flex:1;font-family:inherit;font-size:12.5px;padding:9px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);border-radius:7px;cursor:pointer;font-weight:bold}
 button.primary{background:var(--navy);color:#fff;border-color:var(--navy)}button:hover{opacity:.9}
+.email-input{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font-size:13px;outline:none;box-sizing:border-box;margin-top:6px}
+.email-input::placeholder{color:#9ca3af}
 footer{max-width:1180px;margin:0 auto;padding:6px 20px 30px;font-size:11px;color:var(--grey)}
 .print-only{display:none}
 @page{margin:14mm}
@@ -79,6 +81,7 @@ footer{max-width:1180px;margin:0 auto;padding:6px 20px 30px;font-size:11px;color
    <div class="kv"><b>Signature question</b><span id="curQ">—</span></div>
    <div class="kv"><b>Recommended engagement</b><span id="curEng">—</span></div>
    <div class="prof"><h3>Capability profile (star)</h3><div id="profile"></div></div>
+   <div class="kv"><b>Report email</b><input id="emailTo" class="email-input" type="email" placeholder="Enter email address" value="bartgabriels@microsoft.com"></div>
    <div class="btns"><button class="primary" onclick="emailReport()">Email report</button><button onclick="window.print()">Print / PDF</button><button onclick="resetAll()">Reset</button></div>
  </div></aside>
 </div>
@@ -146,7 +149,10 @@ function recompute(){
   document.getElementById("curEng").textContent=META[disp].eng;
 }
 function emailReport(){
-  var NL=String.fromCharCode(10), to="bartgabriels@microsoft.com", L=[];
+  var NL=String.fromCharCode(10);
+  var toInput=document.getElementById('emailTo');
+  var to=toInput&&toInput.value.trim()?toInput.value.trim():'bartgabriels@microsoft.com';
+  var L=[];
   L.push("Trusted AI Pathway — IT / Security Admin self-assessment"); L.push("");
   if(touched.size===0){ L.push("(No answers yet — the sliders were not moved.)"); }
   else{
