@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en" data-theme="dark"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trusted AI Pathway — IT / Security Admin Self-Assessment</title>
 <style>
-:root{--navy:#1F3864;--grey:#6b7280;--line:#e5e7eb;--bg:#f5f6f8}
+:root{--navy:#1F3864;--accent:#1F3864;--grey:#6b7280;--line:#e5e7eb;--bg:#f5f6f8;--surface:#ffffff;--text:#1f2937;--headbg:#1F3864;--headfg:#ffffff}
+:root[data-theme="dark"]{--accent:#8fb3ff;--grey:#9aa3af;--line:#333a44;--bg:#14171c;--surface:#1e232b;--text:#e6e8eb;--headbg:#10131a;--headfg:#eaf0ff}
 *{box-sizing:border-box}
-body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--bg);color:#1f2937;line-height:1.45}
-header{background:var(--navy);color:#fff;padding:22px 26px}
+body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.45}
+header{background:var(--headbg);color:var(--headfg);padding:22px 26px;position:relative}
+.themebtn{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.15);color:var(--headfg);border:1px solid rgba(255,255,255,.45);border-radius:7px;padding:6px 12px;font-size:12px;font-weight:bold;cursor:pointer;font-family:inherit}
+.themebtn:hover{background:rgba(255,255,255,.28)}
 header h1{margin:0;font-size:22px}header p{margin:4px 0 0;font-size:13px;opacity:.85;max-width:840px}
 .wrap{max-width:1180px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 340px;gap:20px}
 @media(max-width:980px){.wrap{grid-template-columns:1fr}}
-.q{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .q .kind{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;font-weight:bold}
 .q .text{font-size:14px;margin:5px 0 11px}
 .q .text.voice{font-style:italic}
 .row{display:flex;align-items:center;gap:14px}
-.scaleval{font-weight:bold;font-size:17px;width:18px;text-align:center;color:var(--navy)}
+.scaleval{font-weight:bold;font-size:17px;width:18px;text-align:center;color:var(--accent)}
 input[type=range]{flex:1;-webkit-appearance:none;height:6px;border-radius:6px;background:var(--line);outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--navy);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--navy);cursor:pointer;border:2px solid #fff}
 .ticks{display:flex;justify-content:space-between;font-size:10px;color:#9ca3af;margin:3px 34px 0 32px}
 aside{position:sticky;top:16px;align-self:start}
-.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.panel h2{margin:0 0 12px;font-size:14px;color:var(--navy);text-transform:uppercase;letter-spacing:.5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.panel h2{margin:0 0 12px;font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
 .bigstage{font-size:22px;font-weight:bold;margin:2px 0}
 .kv{font-size:13px;margin:10px 0}.kv b{display:block;color:var(--grey);font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
 .idxbar{height:14px;background:var(--line);border-radius:7px;overflow:hidden;margin-top:2px}
-.idxbar>span{display:block;height:100%;width:0;background:var(--navy);transition:width .15s}
+.idxbar>span{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
 .idxlabels{display:flex;font-size:9.5px;color:#9ca3af;margin-top:3px}
 .idxlabels span{flex:1;text-align:center}
 .prof{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
@@ -36,13 +39,15 @@ aside{position:sticky;top:16px;align-self:start}
 .bar{height:9px;background:var(--line);border-radius:6px;overflow:hidden}
 .bar>span{display:block;height:100%;width:0;transition:width .15s}
 .btns{display:flex;gap:8px;margin-top:16px}
-button{flex:1;font-family:inherit;font-size:12.5px;padding:9px;border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:7px;cursor:pointer;font-weight:bold}
-button.primary{background:var(--navy);color:#fff}button:hover{opacity:.9}
+button{flex:1;font-family:inherit;font-size:12.5px;padding:9px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);border-radius:7px;cursor:pointer;font-weight:bold}
+button.primary{background:var(--navy);color:#fff;border-color:var(--navy)}button:hover{opacity:.9}
 footer{max-width:1180px;margin:0 auto;padding:6px 20px 30px;font-size:11px;color:var(--grey)}
 .print-only{display:none}
 @page{margin:14mm}
 @media print{
-  body{background:#fff}
+  :root,:root[data-theme="dark"]{--bg:#fff;--surface:#fff;--text:#000;--grey:#444;--line:#ccc;--accent:#1F3864;--headbg:#fff;--headfg:#1F3864}
+  .themebtn{display:none}
+  body{background:#fff;color:#000}
   header{background:#fff;color:var(--navy);border-bottom:2px solid var(--navy);padding:0 0 10px}
   header p{opacity:1;color:#333}
   .wrap{display:flex;flex-direction:column;max-width:none;padding:0;gap:0}
@@ -60,7 +65,7 @@ footer{max-width:1180px;margin:0 auto;padding:6px 20px 30px;font-size:11px;color
 }
 </style></head>
 <body>
-<header><h1>Trusted AI Pathway — IT / Security Admin Self-Assessment</h1><p>Slide each statement 1–5 for how true it is for your organisation today (1 = not true, 5 = completely true). Every statement is a capability — your answers combine into one Maturity Index from 1 to 100.</p></header>
+<header><button id="themeBtn" class="themebtn" onclick="toggleTheme()">Light mode</button><h1>Trusted AI Pathway — IT / Security Admin Self-Assessment</h1><p>Slide each statement 1–5 for how true it is for your organisation today (1 = not true, 5 = completely true). Every statement is a capability — your answers combine into one Maturity Index from 1 to 100.</p></header>
 <div class="wrap">
  <main><h2 class="print-only answers-title">Your answers</h2><div id="qs"></div></main>
  <aside><div class="panel">
@@ -73,20 +78,20 @@ footer{max-width:1180px;margin:0 auto;padding:6px 20px 30px;font-size:11px;color
    <div class="kv"><b>Value driver</b><span id="curDriver">—</span></div>
    <div class="kv"><b>Signature question</b><span id="curQ">—</span></div>
    <div class="kv"><b>Recommended engagement</b><span id="curEng">—</span></div>
-   <div class="prof"><h3>Capability by stage</h3><div id="profile"></div></div>
+   <div class="prof"><h3>Capability profile (star)</h3><div id="profile"></div></div>
    <div class="btns"><button class="primary" onclick="emailReport()">Email report</button><button onclick="window.print()">Print / PDF</button><button onclick="resetAll()">Reset</button></div>
  </div></aside>
 </div>
 <footer>Reflects the Innovation Hub "Trusted AI Pathway" deck. Maturity index: 1 = the very start of Discover, 100 = fully deployed at Scale. A stage is "built" at an average of 3.5 / 5.</footer>
 <script>
-const ITEMS = [{"id": "q1", "stage": 4, "kind": "Characteristic", "text": "Agents are published through controlled, ring-based deployment (pilot → department → enterprise), not ad-hoc."}, {"id": "q2", "stage": 2, "kind": "Characteristic", "text": "Sensitivity labels / classification are applied so AI grounding respects what is safe to use vs. what needs care."}, {"id": "q3", "stage": 1, "kind": "Characteristic", "text": "We have visibility into who is using AI, with which prompts, and against what data."}, {"id": "q4", "stage": 2, "kind": "Characteristic", "text": "DLP controls apply to AI prompts and grounding, and access has been tightened (access reviews / just-enough-access)."}, {"id": "q5", "stage": 3, "kind": "Characteristic", "text": "Agent access is intentional and least-privilege — agents don't inherit broad or accidental access."}, {"id": "q6", "stage": 1, "kind": "Characteristic", "text": "We have an AI usage policy, an approved-tool list and basic guardrails in place."}, {"id": "q7", "stage": 4, "kind": "Characteristic", "text": "Agent identities are managed just like user identities, with least-privilege, policy-based access that can be revoked instantly."}, {"id": "q8", "stage": 3, "kind": "Characteristic", "text": "Every production agent has a clear business and technical owner, with an explicitly defined purpose and scope."}, {"id": "q9", "stage": 2, "kind": "Characteristic", "text": "We have visibility into where AI data risk really is — overshared sites, sensitive content and ownerless content are identified."}, {"id": "q10", "stage": 3, "kind": "Characteristic", "text": "We have a central inventory of all AI agents — user-built, team-built and IT-managed — and can detect shadow / unmanaged agents."}];
+const ITEMS = [{"id": "q1", "stage": 4, "kind": "Characteristic", "text": "Agents are published through controlled, ring-based deployment (pilot → department → enterprise), not ad-hoc.", "short": false}, {"id": "q2", "stage": 2, "kind": "Characteristic", "text": "Sensitivity labels / classification are applied so AI grounding respects what is safe to use vs. what needs care.", "short": false}, {"id": "q3", "stage": 1, "kind": "Characteristic", "text": "We have visibility into who is using AI, with which prompts, and against what data.", "short": false}, {"id": "q4", "stage": 2, "kind": "Characteristic", "text": "DLP controls apply to AI prompts and grounding, and access has been tightened (access reviews / just-enough-access).", "short": false}, {"id": "q5", "stage": 3, "kind": "Characteristic", "text": "Agent access is intentional and least-privilege — agents don't inherit broad or accidental access.", "short": false}, {"id": "q6", "stage": 1, "kind": "Characteristic", "text": "We have an AI usage policy, an approved-tool list and basic guardrails in place.", "short": false}, {"id": "q7", "stage": 4, "kind": "Characteristic", "text": "Agent identities are managed just like user identities, with least-privilege, policy-based access that can be revoked instantly.", "short": false}, {"id": "q8", "stage": 3, "kind": "Characteristic", "text": "Every production agent has a clear business and technical owner, with an explicitly defined purpose and scope.", "short": false}, {"id": "q9", "stage": 2, "kind": "Characteristic", "text": "We have visibility into where AI data risk really is — overshared sites, sensitive content and ownerless content are identified.", "short": false}, {"id": "q10", "stage": 3, "kind": "Characteristic", "text": "We have a central inventory of all AI agents — user-built, team-built and IT-managed — and can detect shadow / unmanaged agents.", "short": false}];
 const META = {"1": {"name": "Discover", "driver": "Individual productivity", "q": "Where does this help me?", "eng": "Business Envisioning — Discover: Copilot on Every Desk (hackathons, promptathons, use-case & change workshops)"}, "2": {"name": "Ready", "driver": "Data confidence", "q": "What happens to our data when everyone starts using it?", "eng": "Business + Solution Envisioning — Ready: build confidence in how GenAI works with your data"}, "3": {"name": "Govern", "driver": "Agents under control", "q": "What is AI doing in our organisation?", "eng": "Business + Solution Envisioning — Govern: Agent 365 visibility, ownership and control"}, "4": {"name": "Scale", "driver": "Enterprise operations", "q": "How do we deploy AI agents safely and consistently across the enterprise?", "eng": "Scale: enterprise rollout, ring-based deployment, agents operated like any enterprise capability"}};
 const COLORS = {"1": "2E75B6", "2": "548235", "3": "BF8F00", "4": "7030A0"};
 const T = 3.5;
 const touched = new Set();
 const qs = document.getElementById("qs");
 ITEMS.forEach(it=>{
-  const d=document.createElement("div"); d.className="q";
+  const d=document.createElement("div"); d.className="q"; d.dataset.short=it.short?"1":"0";
   d.innerHTML=`<div class="kind">${it.kind}</div>
    <div class="text ${it.kind==='Voice'?'voice':''}">${it.text}</div>
    <div class="row"><span class="print-only" style="font-weight:normal;font-size:12px;color:#000">Score:&nbsp;</span><span class="scaleval" id="${it.id}v">1</span>
@@ -109,9 +114,23 @@ function recompute(){
   var mean=allc?all/allc:0, index=Math.round(1+99*(mean-1)/4), avg={};
   [1,2,3,4].forEach(function(n){avg[n]=cnt[n]?sum[n]/cnt[n]:0;});
   var stage; if(avg[1]<T)stage=1; else if(avg[2]<T)stage=2; else if(avg[3]<T)stage=3; else if(avg[4]<T)stage=4; else stage=5;
-  [1,2,3,4].forEach(function(n){var pct=Math.round(avg[n]/5*100);
-    document.getElementById("p"+n).style.width=pct+"%";
-    document.getElementById("p"+n+"t").textContent=(touched.size&&avg[n]>=T)?"Built":pct+"%";});
+  var cx=140,cy=112,R=82,ax={1:[cx,cy-R],2:[cx+R,cy],3:[cx,cy+R],4:[cx-R,cy]};
+  var dk=document.documentElement.dataset.theme!=='light';
+  var grid=dk?'#3a424e':'#e5e7eb', pst=dk?'#8fb3ff':'#1F3864', pf=dk?'rgba(143,179,255,.20)':'rgba(31,56,100,.18)';
+  function pt(n,f){return [(cx+(ax[n][0]-cx)*f).toFixed(1),(cy+(ax[n][1]-cy)*f).toFixed(1)];}
+  var svg='<svg width="280" height="224" viewBox="0 0 280 224" font-family="Arial">';
+  [0.25,0.5,0.75,1].forEach(function(f){var pl=[1,2,3,4].map(function(n){return pt(n,f).join(',');}).join(' ');svg+='<polygon points="'+pl+'" fill="none" stroke="'+grid+'"/>';});
+  svg+='<defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="'+COLORS[1]+'"/><stop offset="35%" stop-color="'+COLORS[2]+'"/><stop offset="70%" stop-color="'+COLORS[3]+'"/><stop offset="100%" stop-color="'+COLORS[4]+'"/></linearGradient></defs>';
+  [1,2,3,4].forEach(function(n){svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+ax[n][0]+'" y2="'+ax[n][1]+'" stroke="'+COLORS[n]+'" stroke-opacity="0.3"/>';});
+  [1,2,3,4].forEach(function(n){var p=pt(n,(avg[n]||0)/5);svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="'+COLORS[n]+'" stroke-width="6" stroke-linecap="round" stroke-opacity="0.55"/>';});
+  var dp=[1,2,3,4].map(function(n){return pt(n,(avg[n]||0)/5).join(',');}).join(' ');
+  svg+='<polygon points="'+dp+'" fill="'+pf+'" stroke="url(#sg)" stroke-width="3"/>';
+  [1,2,3,4].forEach(function(n){var p=pt(n,(avg[n]||0)/5);svg+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="'+COLORS[n]+'" stroke="#fff" stroke-width="1.5"/>';});
+  var lab={1:[cx,cy-R-8,'middle'],2:[cx+R+6,cy+3,'start'],3:[cx,cy+R+17,'middle'],4:[cx-R-6,cy+3,'end']};
+  [1,2,3,4].forEach(function(n){svg+='<text x="'+lab[n][0]+'" y="'+lab[n][1]+'" text-anchor="'+lab[n][2]+'" font-size="11" font-weight="bold" fill="'+COLORS[n]+'">'+META[n].name+'</text>';});
+  svg+='</svg>';
+  svg+='<div style="font-size:11px;color:var(--text);margin-top:2px">'+[1,2,3,4].map(function(n){return '<span style="color:'+COLORS[n]+'">●</span> '+META[n].name+' '+Math.round((avg[n]||0)/5*100)+'%'+((touched.size&&avg[n]>=T)?' ✓':'');}).join(' &nbsp; ')+'</div>';
+  document.getElementById("profile").innerHTML=svg;
   if(touched.size===0){
     document.getElementById("idxnum").textContent="—";document.getElementById("idxbar").style.width="0%";
     var cs0=document.getElementById("curStage");cs0.textContent="Move the sliders to begin";cs0.style.color="#1f2937";
@@ -145,6 +164,7 @@ function emailReport(){
   window.location.href="mailto:"+to+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(L.join(NL));
 }
 function resetAll(){touched.clear();document.querySelectorAll('input[type=range]').forEach(r=>{r.value=1;document.getElementById(r.id+"v").textContent="1";});recompute();}
+function toggleTheme(){var d=document.documentElement;d.dataset.theme=(d.dataset.theme==='light')?'dark':'light';document.getElementById('themeBtn').textContent=(d.dataset.theme==='dark')?'Light mode':'Dark mode';recompute();}
 recompute();
 </script>
 </body></html>
